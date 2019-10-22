@@ -1,0 +1,89 @@
+﻿@model IEnumerable<FeelAtHomeRestaurant.ViewModel.CategoryTypeViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    ViewData["Title"] = "Index";
+    var CategoryViewModel = ViewBag.categoryViewModel as List<FeelAtHomeRestaurant.ViewModel.CategoryTypeViewModel>;
+}
+@if (@ViewBag.SuccessfulMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewBag.SuccessfulMessage
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        <span><i class="fa fa-plus"></i></span>
+        &nbsp; Create New
+    </a>
+</p>
+@{
+    int sn = 1;
+}
+
+@if (CategoryViewModel != null)
+{
+    <table id="FoodCategory" class="table table-bordered table-striped table-hover custab td"
+           style="margin: 2% 0; overflow-x: scroll; overflow-y: scroll;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    DisplayOrder
+                </th>
+               
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in CategoryViewModel)
+            {
+                <tr>
+                    <td>
+                        @sn
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayOrder)
+                    </td>
+                    
+                        @await Html.PartialAsync("_TableButtonPartial", new IndividualButtonPartial { Id = item.CategoryTypeId })
+                    
+                </tr>
+                sn += 1;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>No Data Found</h4>
+}
+<script type="text/javascript">
+
+        var table = "";
+
+        $(document).ready(function () {
+            table = $('#FoodCategory').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            });
+        });
+
+</script>
+

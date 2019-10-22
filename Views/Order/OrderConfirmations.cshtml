@@ -1,0 +1,35 @@
+﻿@model FeelAtHomeRestaurant.ViewModel.OrderDetailViewModel
+@{
+    ViewData["Title"] = "OrderConfirmations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center">OrderConfirmations</h2>
+<div class="col-md-12">
+    <div class="card" style="background-color:white">
+        
+            <div class="row">
+
+                @if (Model.OrderHeader != null)
+                {
+
+                    @await Html.PartialAsync("_OrderDetailPartialView")
+
+
+                }
+                else
+                {
+                    <div class="text-danger">
+                        <h5 style="text-align:center">Error... Please try again</h5>
+                    </div>
+                }
+            </div>
+        
+
+        <div class="row">
+            <div class="col-md-12">
+                <a asp-action="Index" asp-controller="Home" class="btn btn-success pull-right">Pleace Another Order</a>
+            </div>
+        </div>
+    </div>
+</div>

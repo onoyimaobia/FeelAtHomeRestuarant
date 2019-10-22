@@ -1,0 +1,32 @@
+﻿
+.dropdown {
+    border-radius: 0;
+    border: 0;
+}
+
+.dropdown-menu {
+    background: #f5f5f5;
+    border: 0;
+    top: 80%;
+    border-radius: 0px 0px 5px 5px;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background-color:lightgray;
+    color: white;
+    text-decoration: none;
+}
+
+.dropdown-menu a {
+    color:black;
+    text-decoration: none;
+}
+.dropdown-divider{
+    background:white;
+    color:ghostwhite;
+}
+
+
+
+ 

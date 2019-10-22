@@ -1,0 +1,427 @@
+﻿@using Microsoft.AspNetCore.Http
+@using FeelAtHomeRestaurant.Utility
+@using Microsoft.AspNetCore.Identity
+@using FeelAtHomeRestaurant.Data
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FeelAtHomeRestaurant</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="~/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/dropdownhover.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+        <link href="~/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/dropdownhover.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css" />
+        
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/slider/js/jssor.slider.min.js"></script>
+    <style>
+        body {
+            background-image: url('/Images/makebg2.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100%;
+            font-family: 'Numans', sans-serif;
+        }
+        /* jssor slider loading skin spin css */
+        .jssorl-009-spin img {
+            animation-name: jssorl-009-spin;
+            animation-duration: 1.6s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @@keyframes jssorl-009-spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .jssora093 {
+            display: block;
+            position: absolute;
+            cursor: pointer;
+        }
+
+            .jssora093 .c {
+                fill: none;
+                stroke: #fff;
+                stroke-width: 400;
+                stroke-miterlimit: 10;
+            }
+
+            .jssora093 .a {
+                fill: none;
+                stroke: #fff;
+                stroke-width: 400;
+                stroke-miterlimit: 10;
+            }
+
+            .jssora093:hover {
+                opacity: .8;
+            }
+
+            .jssora093.jssora093dn {
+                opacity: .6;
+            }
+
+            .jssora093.jssora093ds {
+                opacity: .3;
+                pointer-events: none;
+            }
+
+        .jssort101 .p {
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            background: #000;
+        }
+
+            .jssort101 .p .cv {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border: 2px solid #000;
+                box-sizing: border-box;
+                z-index: 1;
+            }
+
+        .jssort101 .a {
+            fill: none;
+            stroke: #fff;
+            stroke-width: 400;
+            stroke-miterlimit: 10;
+            visibility: hidden;
+        }
+
+        .jssort101 .p:hover .cv, .jssort101 .p.pdn .cv {
+            border: none;
+            border-color: transparent;
+        }
+
+        .jssort101 .p:hover {
+            padding: 2px;
+        }
+
+            .jssort101 .p:hover .cv {
+                background-color: rgba(0,0,0,6);
+                opacity: .35;
+            }
+
+            .jssort101 .p:hover.pdn {
+                padding: 0;
+            }
+
+                .jssort101 .p:hover.pdn .cv {
+                    border: 2px solid #fff;
+                    background: none;
+                    opacity: .35;
+                }
+
+        .jssort101 .pav .cv {
+            border-color: #fff;
+            opacity: .35;
+        }
+
+        .jssort101 .pav .a, .jssort101 .p:hover .a {
+            visibility: visible;
+        }
+
+        .jssort101 .t {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: .6;
+        }
+
+        .jssort101 .pav .t, .jssort101 .p:hover .t {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-lg-12">
+                <header>
+                    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                        <div class="container">
+                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">FeelAtHomeRestaurant</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                <partial name="_LoginPartial" />
+                                <ul class="navbar-nav flex-grow-1">
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                            <span class="fa fa-info" aria-hidden="true"></span>
+                                            Manage Order
+                                        </a>
+                                    </li>
+
+                                    @*<li class="nav-item dropdown dmenu">
+            <a href="#" class="nav-link text-dark" data-toggle="dropdown">
+                <span class="fa fa-arrow-circle-down" aria-hidden="true"></span>
+                Admin
+            </a>
+            <ul class="dropdown-menu sm-menu" role="menu">
+                <li class="dropdown-divider"></li>
+                <li class="dropdown-item"><a asp-controller="CategoryType" asp-action="Index">Category Type</a></li>
+                <li class="dropdown-item"><a asp-controller="FoodType" asp-action="Index">Food Type</a></li>
+                <li class="dropdown-divider"></li>
+                <li class="dropdown-item"><a asp-controller="MenuItem" asp-action="Index">Menu Item</a></li>
+            </ul>
+        </li>*@
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="OrderHistory">Order History</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="ManageOrder">Manage Order</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-action="OrderPickup" asp-controller="Order">
+                                                <span class="fa fa-info" aria-hidden="true"></span>
+                                                Order Pick
+                                            </a>
+                                        </li>
+
+                                        @if (HttpContextAccessor.HttpContext.Session.GetInt32("CartCount") != null)
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Shoppingcart" asp-action="CartDetails">
+                                                    <span i class="fa fa-cart-plus" aria-hidden="true"></span> &nbsp;(@HttpContextAccessor.HttpContext.Session.GetInt32("CartCount"))
+                                                </a>
+                                            </li>
+                                            @*<li style="color:white;">
+                    <a href="/Cart/Index">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> &nbsp;(@HttpContextAccessor.HttpContext.Session.GetInt32("CartCount"))
+                    </a>
+                </li>*@
+
+                                        }
+                                        else
+                                        {
+                                            <li class="nav-item">
+                                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage Order">
+                                                    <span i class="fa fa-cart-plus" aria-hidden="true"></span> &nbsp;(0)
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Manage Order">
+                                                <span i class="fa fa-cart-plus" aria-hidden="true"></span> &nbsp;(0)
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-top:-1%;">
+        <div class="row">
+            <div class="col-sm-2 col-lg-2" style="background-color:black">
+                <h6>hi</h6>
+            </div>
+            <div class="col-sm-10 col-lg-10">
+                <script type="text/javascript">
+                    jssor_1_slider_init = function () {
+
+                        var jssor_1_SlideshowTransitions = [
+                            { $Duration: 1200, $Zoom: 1, $Easing: { $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad }, $Opacity: 2 },
+                            { $Duration: 1000, $Zoom: 11, $SlideOut: true, $Easing: { $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+                            { $Duration: 1200, $Zoom: 1, $Rotate: 1, $During: { $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: { $Zoom: $Jease$.$Swing, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$Swing }, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+                            { $Duration: 1000, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+                            { $Duration: 1200, x: 0.5, $Cols: 2, $Zoom: 1, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+                            { $Duration: 1200, x: 4, $Cols: 2, $Zoom: 11, $SlideOut: true, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear }, $Opacity: 2 },
+                            { $Duration: 1200, x: 0.6, $Zoom: 1, $Rotate: 1, $During: { $Left: [0.2, 0.8], $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: $Jease$.$Swing, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+                            { $Duration: 1000, x: -4, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+                            { $Duration: 1200, x: -0.6, $Zoom: 1, $Rotate: 1, $During: { $Left: [0.2, 0.8], $Zoom: [0.2, 0.8], $Rotate: [0.2, 0.8] }, $Easing: $Jease$.$Swing, $Opacity: 2, $Round: { $Rotate: 0.5 } },
+                            { $Duration: 1000, x: 4, $Zoom: 11, $Rotate: 1, $SlideOut: true, $Easing: { $Left: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.8 } },
+                            { $Duration: 1200, x: 0.5, y: 0.3, $Cols: 2, $Zoom: 1, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+                            { $Duration: 1000, x: 0.5, y: 0.3, $Cols: 2, $Zoom: 1, $Rotate: 1, $SlideOut: true, $Assembly: 2049, $ChessMode: { $Column: 15 }, $Easing: { $Left: $Jease$.$InExpo, $Top: $Jease$.$InExpo, $Zoom: $Jease$.$InExpo, $Opacity: $Jease$.$Linear, $Rotate: $Jease$.$InExpo }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+                            { $Duration: 1200, x: -4, y: 2, $Rows: 2, $Zoom: 11, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Row: 28 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.7 } },
+                            { $Duration: 1200, x: 1, y: 2, $Cols: 2, $Zoom: 11, $Rotate: 1, $Assembly: 2049, $ChessMode: { $Column: 19 }, $Easing: { $Left: $Jease$.$InCubic, $Top: $Jease$.$InCubic, $Zoom: $Jease$.$InCubic, $Opacity: $Jease$.$OutQuad, $Rotate: $Jease$.$InCubic }, $Opacity: 2, $Round: { $Rotate: 0.8 } }
+                        ];
+
+                        var jssor_1_options = {
+                            $AutoPlay: 1,
+                            $SlideshowOptions: {
+                                $Class: $JssorSlideshowRunner$,
+                                $Transitions: jssor_1_SlideshowTransitions,
+                                $TransitionsOrder: 1
+                            },
+                            $ArrowNavigatorOptions: {
+                                $Class: $JssorArrowNavigator$
+                            },
+                            $ThumbnailNavigatorOptions: {
+                                $Class: $JssorThumbnailNavigator$,
+                                $Rows: 2,
+                                $SpacingX: 14,
+                                $SpacingY: 12,
+                                $Orientation: 2,
+                                $Align: 156
+                            }
+                        };
+
+                        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+                        /*#region responsive code begin*/
+
+                        var MAX_WIDTH = 960;
+
+                        function ScaleSlider() {
+                            var containerElement = jssor_1_slider.$Elmt.parentNode;
+                            var containerWidth = containerElement.clientWidth;
+
+                            if (containerWidth) {
+
+                                var expectedWidth = Math.min(MAX_WIDTH || containerWidth, containerWidth);
+
+                                jssor_1_slider.$ScaleWidth(expectedWidth);
+                            }
+                            else {
+                                window.setTimeout(ScaleSlider, 30);
+                            }
+                        }
+
+                        ScaleSlider();
+
+                        $Jssor$.$AddEvent(window, "load", ScaleSlider);
+                        $Jssor$.$AddEvent(window, "resize", ScaleSlider);
+                        $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
+                        /*#endregion responsive code end*/
+                    };
+                </script>
+                <div id="jssor_1" style="position:relative;margin:0 auto;top:0px;left:0px;width:960px;height:320px;overflow:hidden;visibility:hidden;background-color:#24262e;">
+                    <!-- Loading Screen -->
+                    <div data-u="loading" class="jssorl-009-spin" style="position:absolute;top:0px;left:0px;width:100%;height:100%;text-align:center;background-color:rgba(0,0,0,0.7);">
+                        <img style="margin-top:-19px;position:relative;top:50%;width:38px;height:38px;" src="../svg/loading/static-svg/spin.svg" />
+                    </div>
+                    <div data-u="slides" style="cursor:default;position:relative;top:0px;left:240px;width:960px;height:480px;overflow:hidden;">
+                        @{
+                            var images = Helper.GetAll();
+                            foreach (var item in images)
+                            {
+                                <div>
+                                    <img data-u="image" src="@Url.Content(item.ImageUrl)" class="img-fluid" />
+                                    <img data-u="thumb" src="@Url.Content(item.ImageUrl)" class="img-fluid" />
+
+                                </div>
+                            }
+                        }
+
+
+                    </div>
+                    <!-- Thumbnail Navigator -->
+                    <div data-u="thumbnavigator" class="jssort101" style="position:absolute;left:0px;top:0px;width:240px;height:480px;background-color:#000;" data-autocenter="2" data-scale-left="0.75">
+                        <div data-u="slides">
+                            <div data-u="prototype" class="p" style="width:99px;height:66px;">
+                                <div data-u="thumbnailtemplate" class="t"></div>
+                                <svg viewBox="0 0 16000 16000" class="cv">
+                                    <circle class="a" cx="8000" cy="8000" r="3238.1"></circle>
+                                    <line class="a" x1="6190.5" y1="8000" x2="9809.5" y2="8000"></line>
+                                    <line class="a" x1="8000" y1="9809.5" x2="8000" y2="6190.5"></line>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Arrow Navigator -->
+                    <div data-u="arrowleft" class="jssora093" style="width:50px;height:50px;top:0px;left:270px;" data-autocenter="2">
+                        <svg viewBox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                            <circle class="c" cx="8000" cy="8000" r="5920"></circle>
+                            <polyline class="a" points="7777.8,6080 5857.8,8000 7777.8,9920 "></polyline>
+                            <line class="a" x1="10142.2" y1="8000" x2="5857.8" y2="8000"></line>
+                        </svg>
+                    </div>
+                    <div data-u="arrowright" class="jssora093" style="width:50px;height:50px;top:0px;right:30px;" data-autocenter="2">
+                        <svg viewBox="0 0 16000 16000" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+                            <circle class="c" cx="8000" cy="8000" r="5920"></circle>
+                            <polyline class="a" points="8222.2,6080 10142.2,8000 8222.2,9920 "></polyline>
+                            <line class="a" x1="5857.8" y1="8000" x2="10142.2" y2="8000"></line>
+                        </svg>
+                    </div>
+                </div>
+                <script type="text/javascript">jssor_1_slider_init();</script>
+                <!-- #endregion Jssor Slider End -->
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2019 - FeelAtHomeRestaurant - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script> 
+    </environment>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/AdminMenu.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

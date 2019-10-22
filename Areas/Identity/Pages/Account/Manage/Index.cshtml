@@ -1,0 +1,110 @@
+﻿@page
+@model IndexModel
+@{
+   
+
+    ViewData["Title"] = "Edit Profile";
+    ViewData["profile"] = " Your Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    var pic = ViewData["profilepic"];
+    var userFirstName = ViewData["userF"];
+    var userLastName = ViewData["userL"];
+    var userPhone = ViewData["userP"];
+    var useraddress = ViewData["userA"];
+}
+<style>
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+<div class="card" style="background-color:white">
+    <partial name="_StatusMessage" for="StatusMessage" />
+    <div class="row">
+
+        <div class="col-md-6">
+            <h4>@ViewData["profile"]</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="@Url.Content(pic.ToString())" class="img-fluid img-thumbnail rounded-circle" />
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input value="@userFirstName.ToString()" disabled class="form-control" />
+
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input value=" @userLastName.ToString()" disabled class="form-control" />
+                    </div>
+
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input value="@userPhone.ToString()" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input value="@useraddress.ToString()" disabled class="form-control" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <h4>@ViewData["Title"]</h4>
+            <form id="profile-form" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="Input.Email" />
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    @if (Model.IsEmailConfirmed)
+                    {
+                        <div class="input-group">
+                            <input asp-for="Input.Email" disabled class="form-control" />
+                            <span class="input-group-addon" aria-hidden="true"><span class="glyphicon glyphicon-ok text-success"></span></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <input asp-for="Input.Email" disabled class="form-control" />
+                        <button id="email-verification" type="submit" asp-page-handler="SendVerificationEmail" class="btn btn-link">Send verification email</button>
+                    }
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.PhoneNumber"></label>
+                    <input asp-for="Input.PhoneNumber" class="form-control" />
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="form-control" />
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Address"></label>
+                    <input asp-for="Input.Address" class="form-control" />
+                    <span asp-validation-for="Input.Address" class="text-danger"></span>
+                </div>
+                <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

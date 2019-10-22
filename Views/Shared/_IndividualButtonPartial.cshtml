@@ -1,0 +1,9 @@
+﻿@model FeelAtHomeRestaurant.Models.IndividualButtonPartial
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<a type="button" class="btn @Model.ButtonType" asp-action="@Model.Page"
+   asp-route-id="@Model.ActionParameter">
+    <span><i class="@Model.FontAwesome"></i></span>
+</a>

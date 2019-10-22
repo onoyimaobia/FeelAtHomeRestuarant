@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to detail your site's privacy policy.</p>
+
+
+<div id="container"></div>
+<div id="progress" style="display:none">
+    <h4>Loading...</h4>
+</div>
+<script src="~/bower_components/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    let pageSize = 5;
+    let pageIndex = 0;
+    console.log(pageSize);
+    $(document).ready(function () {
+        GetData();
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() ==
+               $(document).height() - $(window).height()) {
+                GetData();
+            }
+        });
+    });
+
+    function GetData() {
+        $.ajax({
+            type: 'GET',
+            url: location.protocol + "//" + window.location.host + "/" + "Home/Privacy",
+            data:{"pageindex":pageIndex,"pagesize":pageSize},
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                if (data != null) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#container").append("<h2>" +
+                        data[i].Name + "</h2>");
+                    }
+                    pageIndex++;
+                }
+            },
+            beforeSend : function () {
+                $("#progress").show();
+            },
+            complete : function () {
+                $("#progress").hide();
+            },
+            error: function () {
+                alert("Error while retrieving data!");
+            }
+        });
+    }
+</script>

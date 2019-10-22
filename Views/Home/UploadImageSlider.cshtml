@@ -1,0 +1,63 @@
+﻿
+@model FeelAtHomeRestaurant.Models.ImageSlider
+
+@{
+    ViewData["Title"] = "UploadImageSlider";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3 ">
+        <div class="card" style="border:3px solid gray;border-radius:5px">
+            <div class="card-header">
+                <h2 style="text-align:center">UploadImageSlider</h2>
+            </div>
+            <div class="card-body bg-white">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="file" id="fUpload" name="files" multiple class="form-control" accept=".jpg,.png,.gif,.jfif,.jpeg" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="padding-top:10px;">
+                            <input type="button" id="btnUpload" value="Upload" class="btn btn-success pull-right" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+   $('#btnUpload').on('click', function () {
+      var files = $('#fUpload').prop("files");
+      var fdata = new FormData();
+      for (var i = 0; i < files.length; i++)
+      {
+          fdata.append("files", files[i]);
+      }
+      if (files.length > 0) {
+          $.ajax({
+             type: "POST",
+             url: location.protocol + "//" + window.location.host + "/" +"Home/UploadImageSlider",
+             beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                   $('input:hidden[name="__RequestVerificationToken"]').val());
+             },
+             data: fdata,
+             contentType: false,
+             processData: false,
+             success: function (response) {
+                 alert('File Uploaded Successfully.'),
+                 location.reload()
+             }
+          });
+      }
+      else {
+          alert('Please select a file.')
+      }
+   })
+});
+</script>

@@ -1,0 +1,142 @@
+﻿@model FeelAtHomeRestaurant.ViewModel.CartDetailViewModel
+@{
+    ViewData["Title"] = "CartDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<form method="post">
+    <h3 style="text-align:center; color:white">Your Shopping Cart Detail</h3>
+
+    <br />
+    @if (Model.Listcarts.Count > 0)
+    {
+        <div class="thumbnail row">
+            <div class="col-md-12">
+                <table width="90%" class="table" style="background-color:white;opacity:0.9">
+                    <tr class="paddingB30pxToTH">
+                        <th></th>
+                        <th style="width:70px;text-align:center;">
+                            <label asp-for="@Model.Listcarts.FirstOrDefault().MenuItem.Price"></label>
+
+                        </th>
+                        <th style="width:70px;text-align:center;">
+                            <label asp-for="@Model.Listcarts.FirstOrDefault().Count"></label>
+                            
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                    @for(var i = 0; i <= Model.Listcarts.Count - 1; i++)
+                    {
+                       
+                        <tr style="border-bottom:1px solid white"></tr>
+                        <tr class="paddingB30pxToTD">
+                            <td>
+                                <b>@Html.DisplayFor(c => Model.Listcarts[i].MenuItem.Name)</b>
+                                <input type="hidden" asp-for="@Model.Listcarts[i].MenuItem.Name" />
+                                <br />
+                                @Html.DisplayFor(c => Model.Listcarts[i].MenuItem.Description)
+                                <input type="hidden" asp-for="@Model.Listcarts[i].MenuItem.Description"  />
+                            </td>
+                            <td style="width:70px;text-align:center">
+                                @Html.DisplayFor(c => Model.Listcarts[i].MenuItem.Price)
+                                <input type="hidden" asp-for="@Model.Listcarts[i].MenuItem.Price" />
+                            </td>
+                            <td style="width:70px;text-align:center">
+                                @Html.DisplayFor(c => Model.Listcarts[i].Count)
+                                <input type="hidden" asp-for="@Model.Listcarts.Count" />
+                                <input type="hidden" asp-for="@Model.Listcarts[i].MenuItem.MenuItemId" />
+                            </td>
+                            <td>
+                                <button type="submit" asp-controller="Shoppingcart" asp-action="AddCart" asp-route-cartId="@Model.Listcarts[i].ShoppingCartId" class="btn btn-primary">
+                                    <span class="fa fa-plus"></span>
+                                </button>
+                                <button type="submit" asp-controller="Shoppingcart" asp-action="RemoveCart" asp-route-cartId="@Model.Listcarts[i].ShoppingCartId" class="btn btn-danger">
+                                    <span class="fa fa-minus"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div class="col-md-12" style="background-color:white; opacity:0.9">
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label class="custom-label"> Order Total : </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input asp-for="@Model.OrderHeader.OrderTotal" hidden />
+                            <input asp-for="@Model.OrderHeader.OrderTotal" disabled class="form-control" />
+                        </div>
+                        <div class="col-sm-2 col-sm-offset-2">
+                            <label class="custom-label"> Pick Up Time : </label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input asp-for="@Model.OrderHeader.PickUpTime" class="form-control" type="text" value="" id="timepicker" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label class="custom-label"> Comments : </label>
+                        </div>
+                        <div class="col-sm-10">
+                            <textarea style="height:100px" asp-for="@Model.OrderHeader.Comment" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:5px">
+                        <div class="col-sm-5 col-sm-offset-2">
+                            <label class="text-danger" id="lblShopClosed" style="display:none;"> Restaurant is closed for the day.</label>
+                        </div>
+                        <div class="col-sm-5 text-right">
+                            <button type="submit" id="btnPlaceOrder" value="Place Order" asp-action="CreateOrderHeader" asp-controller="Shoppingcart" class="btn btn-success">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <h5>The Shopping Cart is Empty.......</h5>
+        </div>
+    }
+</form>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // retrive the current datetime
+            var curDT = new Date();
+            //12pm-10pm
+            //curDT.setHours(12);
+            var gethour = curDT.getHours();
+            var minTime = "";
+            if (curDT.getHours() < 11) {
+                minTime = '12:00pm';
+            }
+            else {
+                if (curDT.getMinutes() < 30) {
+                    minTime = (curDT.getHours() + 1).toString() + ':30pm'
+                }
+                else {
+                    minTime = (curDT.getHours() + 2).toString() + ':00pm'
+                }
+            }
+
+            if (curDT.getHours() >21) {
+                //No more orders
+                $('#timepicker').prop('disabled', true);
+                $('#btnPlaceOrder').prop('disabled', true);
+                $('#lblShopClosed').show();
+            }
+
+            $('#timepicker').timepicker({
+                'minTime': minTime,
+                'maxTime': '10:00pm'
+            });
+        });
+    </script>
+}

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FeelAtHomeRestaurant.Models.MenuItem>
+@using System.IO;
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+@if (ViewBag.statusMessage != null)
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        @ViewBag.statusMessage)
+    </div>
+    
+}
+
+
+@if (Model != null)
+{
+    <div class="container-fluid" style="margin-top:1%">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    @await Html.PartialAsync("_foodsPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+}

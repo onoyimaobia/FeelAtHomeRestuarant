@@ -1,0 +1,51 @@
+﻿@model FeelAtHomeRestaurant.ViewModel.OrderDetailViewModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+    
+        <div class="col-md-5">
+            Order Number : @Model.OrderHeader.OrderHeaderId
+            <ol>
+                @foreach (var details in Model.OrderDetail)
+                {
+                    var result = details.Price * details.Count;
+                
+                    <li>@details.Name &nbsp; &nbsp; Quantity: @details.Count  Total: @result</li>
+                }
+            </ol>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-6">
+                    Order Total:
+                </div>
+                <div class="col-md-6">
+                    ₦@(string.Format("{0:N}", Model.OrderHeader.OrderTotal))
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Pick Time:
+                </div>
+                <div class="col-md-6">
+                    @Model.OrderHeader.Orderdate.ToShortDateString() &nbsp; &nbsp; @Model.OrderHeader.PickUpTime.ToShortTimeString()
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Order Status:
+                </div>
+                <div class="col-md-6">
+                    @Model.OrderHeader.Status
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Comment:
+                </div>
+                <div class="col-md-6">
+                    @Model.OrderHeader.Comment
+                </div>
+            </div>
+        </div>
+    

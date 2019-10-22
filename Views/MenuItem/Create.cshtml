@@ -1,0 +1,75 @@
+﻿
+@model FeelAtHomeRestaurant.ViewModel.MenuItemVM
+@using FeelAtHomeRestaurant.Extensions;
+@{
+ Layout = "~/Views/Shared/_Dashboard.cshtml";
+    ViewData["Title"] = "Create";
+}
+@if (@ViewBag.ErrorStatus != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @ViewBag.ErrorStatus
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+
+<h4>Create Menu Item</h4>
+<hr />
+<div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="file" class="form-control" accept=".jpg,.png,.gif,.jfif,.jpeg,.mp4" />
+
+            </div>
+            <div class="form-group">
+                <label asp-for="Spicyness" class="control-label"></label>
+                <select asp-for="Spicyness" asp-items="@Html.GetEnumSelectList<MenuItem.Spicy>()" class="form-control"></select>
+                <span asp-validation-for="Spicyness" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="CategoryTypeId" asp-items="@(new SelectList(ViewBag.Categories,"CategoryTypeId","Name"))" class="form-control"></select>
+                <span asp-validation-for="CategoryTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <select asp-for="FoodTypeId" asp-items="@(new SelectList(ViewBag.Foodtypes,"FoodTypeId","Name"))" class="form-control"></select>
+                <span asp-validation-for="FoodTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-sm btn-primary" />
+                <a asp-controller="CategoryType" asp-action="Index" class="btn btn-sm btn-success">Bact to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

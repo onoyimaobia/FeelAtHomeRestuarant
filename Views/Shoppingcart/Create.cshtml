@@ -1,0 +1,76 @@
+﻿@model FeelAtHomeRestaurant.ViewModel.ShoppingCartViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var menuItems = ViewBag.MenuItem as FeelAtHomeRestaurant.ViewModel.ShoppingCartViewModel;
+}
+
+
+<h4 style="text-align:center;color:white">View Item</h4>
+<hr />
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MenuItem.Name" class="control-label" style="color:white"></label>
+                <input asp-for="MenuItem.Name" class="form-control" value="@menuItems.MenuItem.Name"disabled style="color:darkgreen" />
+                <span asp-validation-for="MenuItem.Name" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="MenuItem.Price" class="control-label" style="color:white"></label>
+                <input asp-for="MenuItem.Price" class="form-control" value=" ₦@(string.Format("{0:N}", menuItems.MenuItem.Price))" disabled style="color:darkgreen"/>
+                <span asp-validation-for="MenuItem.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuItem.Spicyness" class="control-label" style="color:white"></label>
+                <input asp-for="MenuItem.Spicyness" class="form-control" value="@menuItems.MenuItem.Spicyness" disabled style="color:darkgreen"/>
+                <span asp-validation-for="MenuItem.Spicyness" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuItem.CategoryType.Name" class="control-label" style="color:white"></label>
+                <input asp-for="MenuItem.CategoryType.Name" class="form-control" value="@menuItems.MenuItem.CategoryType.Name" disabled style="color:darkgreen"/>
+                <span asp-validation-for="MenuItem.CategoryType.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuItem.FoodType.Name" class="control-label" style="color:white"></label>
+                <input asp-for="MenuItem.FoodType.Name" class="form-control" value="@menuItems.MenuItem.FoodType.Name" disabled style="color:darkgreen"/>
+                <span asp-validation-for="MenuItem.FoodType.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label" style="color:black"></label>
+                <input asp-for="Count" class="form-control"/>
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add to Cart" class="btn btn-success pull-right" />
+            </div>
+            <input type="hidden" asp-for="MenuItemId"  value="@menuItems.MenuItem.MenuItemId"/>
+        </form>
+    </div>
+    <div class="col-md-4">
+        @{var item = menuItems.MenuItem.Image.Split(".").Last(); }
+        @if (item == "mp4")
+        {
+            <video loop="loop" muted autoplay="autoplay" style="width:100%; max-height:100%;">
+                <source src="@Url.Content(menuItems.MenuItem.Image)" type="video/mp4" />
+            </video>
+        }
+        else
+        {
+            <img src="@Url.Content(menuItems.MenuItem.Image)" class=" card-img-top img-fluid" height="50" width="100">
+        }
+    <div class="col-md-8">
+        <h5 style="text-align:center;color:lightgray">Description</h5>
+        <p style="color:gray">@menuItems.MenuItem.Description</p>
+    </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

@@ -1,0 +1,165 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using FeelAtHomeRestaurant.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using FeelAtHomeRestaurant.Utility;
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="@Url.Content(Helper.GetPicture(User.Identity.Name))" class="img-circle" alt="User Image">
+            </div>
+            <div class="pull-left info">
+                <p> @Helper.GetUserFullName(User.Identity.Name)</p>
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header"><i class="fa fa-dashboard"></i>DASHBOARD NAVIGATION</li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole(SD.AdminEndUser))
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Food Category</span>
+                            <span class="pull-right-container">
+                                <span class="label label-primary pull-right">2</span>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="dropdown-item"><a asp-controller="CategoryType" asp-action="Index"><i class="fa fa-circle-o"></i>Category Index</a></li>
+                            <li class="dropdown-item"><a asp-controller="CategoryType" asp-action="Create"><i class="fa fa-circle-o"></i>Category Create</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-th"></i>
+                            <span>Food Type</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="dropdown-item"><a asp-controller="FoodType" asp-action="Index"><i class="fa fa-circle-o"></i>FoodType Index</a></li>
+                            <li class="dropdown-item"><a asp-controller="FoodType" asp-action="Create"><i class="fa fa-circle-o"></i>Create FoodType</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-laptop"></i>
+                            <span>Food Menu</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="dropdown-item"><a asp-controller="MenuItem" asp-action="Index"><i class="fa fa-circle-o"></i>Menu Item</a></li>
+                            <li class="dropdown-item"><a asp-controller="MenuItem" asp-action="Create"><i class="fa fa-circle-o"></i> Create Menu Item</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-edit"></i> <span>Order History</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-area="" asp-controller="Home" asp-action="Order/OrderHistory"><i class="fa fa-circle-o"></i> Order History</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-info"></i> <span>Manage Order</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-area="" asp-controller="Home" asp-action="Manage Order"><i class="fa fa-circle-o"></i>Manage Order</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Order Pickup</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-area="" asp-controller="Home" asp-action="Manage Order"><i class="fa fa-circle-o"></i>Order Pickup</a></li>
+                        </ul>
+                    </li>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-folder"></i> <span>Upload Image Slider</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-area="" asp-controller="Home" asp-action="UploadImageSlider"><i class="fa fa-circle-o"></i>Upload Images</a></li>
+                        </ul>
+                    </li>
+                }
+                else if (User.IsInRole(SD.CustomerEndUser))
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-edit"></i> <span>Order History</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a asp-area="" asp-controller="Home" asp-action="Order/OrderHistory"><i class="fa fa-circle-o"></i> Order History</a></li>
+
+                        </ul>
+                    </li>
+
+                }
+            }
+            @*<li>
+            <a href="pages/calendar.html">
+                <i class="fa fa-calendar"></i> <span>Calendar</span>
+                <span class="pull-right-container">
+                    <small class="label pull-right bg-red">3</small>
+                    <small class="label pull-right bg-blue">17</small>
+                </span>
+            </a>
+        </li>*@
+            <li>
+                <a href="pages/mailbox/mailbox.html">
+                    <i class="fa fa-envelope"></i> <span>Mailbox</span>
+                    <span class="pull-right-container">
+                        <small class="label pull-right bg-yellow">12</small>
+                        <small class="label pull-right bg-green">16</small>
+                        <small class="label pull-right bg-red">5</small>
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
